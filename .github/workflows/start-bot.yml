@@ -1,0 +1,73 @@
+name: Start MS Rewards Bot
+
+on:
+  schedule:
+    - cron: "0 0,8,16 * * *" # Runs every 8 hours at Midnight, 8AM, 4PM UTC (aka 8PM, 4AM, Noon - EST)
+  workflow_dispatch:
+jobs:
+  execute-order-666:
+    name: Execute Order 666
+    environment: bing-rewards-env
+    runs-on: ubuntu-latest
+    continue-on-error: false
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js 18.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Setup Env for Chromium
+      run: >
+        sudo apt-get update &&
+        sudo apt-get install -y jq cron gettext-base &&
+        sudo apt-get install -y
+        xvfb
+        libgbm-dev
+        libnss3
+        libasound2
+        libxss1
+        libatk-bridge2.0-0
+        libgtk-3-0
+        fonts-noto-color-emoji &&
+        sudo rm -rf /var/lib/apt/lists
+
+    - name: Configure bot settings
+      run: mv src/accounts.example.json src/accounts.json
+
+    - name: Rewrite contents in accounts.json with env secrets
+      run: echo ${{ secrets.ACCOUNTS }} >| src/accounts.json
+
+    - name: Run npm build script
+      run: npm run build
+
+    - name: Setup Playwright browsers
+      run: npx playwright install chromium
+
+    - name: Run npm start script
+      continue-on-error: true
+      env: 
+        HEADLESS: false
+        GLOBAL_TIMEOUT: ${{ vars.GLOBAL_TIMEOUT }} || 60000
+        SEARCH_DELAY_MIN: ${{ vars.SEARCH_DELAY_MIN }} || 25000
+        SEARCH_DELAY_MAX: ${{ vars.SEARCH_DELAY_MAX }} || 60000
+        DO_MORE_PROMOTIONS: ${{ vars.DO_MORE_PROMOTIONS }} || false
+        DO_DAILY_CHECK_IN: ${{vars.DO_DAILY_CHECK_IN}} || false
+        DO_READ_TO_EARN: ${{vars.DO_READ_TO_EARN}} || false
+        WEBHOOK_ENABLED: ${{ vars.DISCORD_WEBHOOK_ENABLED }} || false
+        WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK }} || ''
+      timeout-minutes: 360 # Run this for 3 hours
+      # Start in xvfb server
+      run: xvfb-run npm run start
+
+    - name: Clean up
+      # Clean up and free up resources
+      run: >
+        rm -f src/accounts.json &&
+        pkill -f 'chromium|google chrome|chrome|Google Chrome for Testing|playwright|xvfb'

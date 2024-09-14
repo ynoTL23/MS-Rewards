@@ -57,6 +57,8 @@ jobs:
         GLOBAL_TIMEOUT: ${{ vars.GLOBAL_TIMEOUT }} || 60000
         SEARCH_DELAY_MIN: ${{ vars.SEARCH_DELAY_MIN }} || 25000
         SEARCH_DELAY_MAX: ${{ vars.SEARCH_DELAY_MAX }} || 60000
+        DO_DESKTOP_SEARCH: ${{ vars.DO_DESKTOP_SEARCH }} || false
+        DO_MOBILE_SEARCH: ${{ vars.DO_MOBILE_SEARCH }} || false
         DO_MORE_PROMOTIONS: ${{ vars.DO_MORE_PROMOTIONS }} || false
         DO_DAILY_CHECK_IN: ${{vars.DO_DAILY_CHECK_IN}} || false
         DO_READ_TO_EARN: ${{vars.DO_READ_TO_EARN}} || false

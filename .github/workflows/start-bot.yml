@@ -68,8 +68,9 @@ jobs:
       # Start in xvfb server
       run: xvfb-run npm run start
 
-    - name: Clean up
+    - name: Delete accounts.json
+      run: rm -f src/accounts.json &&
+
+    - name: Kill processes
       # Clean up and free up resources
-      run: >
-        rm -f src/accounts.json &&
-        pkill -f 'chromium|google chrome|chrome|Google Chrome for Testing|playwright|xvfb'
+      run: pkill -f 'chromium|google chrome|chrome|Google Chrome for Testing|playwright|xvfb'

@@ -69,7 +69,7 @@ jobs:
       run: xvfb-run npm run start
 
     - name: Delete accounts.json
-      run: rm -f src/accounts.json &&
+      run: rm -f src/accounts.json
 
     - name: Kill processes
       # Clean up and free up resources

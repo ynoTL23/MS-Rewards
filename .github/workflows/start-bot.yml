@@ -62,7 +62,7 @@ jobs:
         DO_MORE_PROMOTIONS: ${{ vars.DO_MORE_PROMOTIONS }} || false
         DO_DAILY_CHECK_IN: ${{vars.DO_DAILY_CHECK_IN}} || false
         DO_READ_TO_EARN: ${{vars.DO_READ_TO_EARN}} || false
-        DO_PUNCHCARDS: ${{vars.DO_PUNCHCARDS}} || false
+        DO_PUNCH_CARDS: ${{vars.DO_PUNCH_CARDS}} || false
         WEBHOOK_ENABLED: ${{ vars.DISCORD_WEBHOOK_ENABLED }} || false
         WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK }} || ''
       timeout-minutes: 360 # Run this for 3 hours

@@ -74,4 +74,10 @@ jobs:
 
     - name: Kill processes
       # Clean up and free up resources
-      run: pgrep -f "chromium|google chrome|chrome|Google Chrome for Testing|playwright|xvfb" | xargs -r pkill -f
+      run: |
+        pgrep -f "Google Chrome for Testing" | xargs -r pkill -f
+        pgrep -f "google chrome" | xargs -r pkill -f
+        pgrep -f "chrome" | xargs -r pkill -f
+        pgrep -f "chromium" | xargs -r pkill -f
+        pgrep -f "playwright" | xargs -r pkill -f
+        pgrep -f "xvfrb" | xargs -r pkill -f

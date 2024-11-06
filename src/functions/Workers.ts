@@ -46,6 +46,13 @@ export class Workers {
         }
 
         for (const punchCard of punchCardsUncompleted) {
+
+            // Ensure parentPromotion exists before proceeding
+            if (!punchCard.parentPromotion?.title || punchCard.parentPromotion === null) {
+                this.bot.log('PUNCH-CARD', `Skipped punchcard "${punchCard.name}" | Reason: Parent promotion is missing!`, 'warn')
+                continue
+            }
+            
             // Get latest page for each card
             page = await this.bot.browser.utils.getLatestTab(page)
 

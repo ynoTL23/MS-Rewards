@@ -5,8 +5,8 @@ on:
     - cron: "0 0,8,16 * * *" # Runs every 8 hours at Midnight, 8AM, 4PM UTC (aka 8PM, 4AM, Noon - EST)
   workflow_dispatch:
 jobs:
-  execute-order-666:
-    name: Execute Order 666
+  execute-order-66:
+    name: Execute Order 66
     environment: bing-rewards-env
     runs-on: ubuntu-latest
     continue-on-error: false
@@ -50,9 +50,22 @@ jobs:
     - name: Setup Playwright browsers
       run: npx playwright install chromium
 
-    - name: Run npm start script
-      continue-on-error: true
-      env: 
+    - name: Create .env
+      run: |
+        touch .env
+        echo HEADLESS=$HEADLESS >> .env
+        echo GLOBAL_TIMEOUT=$GLOBAL_TIMEOUT >> .env
+        echo SEARCH_DELAY_MIN=$SEARCH_DELAY_MIN >> .env
+        echo SEARCH_DELAY_MAX=$SEARCH_DELAY_MAX >> .env
+        echo DO_DESKTOP_SEARCH=$DO_DESKTOP_SEARCH >> .env
+        echo DO_MOBILE_SEARCH=$DO_MOBILE_SEARCH >> .env
+        echo DO_MORE_PROMOTIONS=$DO_MORE_PROMOTIONS >> .env
+        echo DO_DAILY_CHECK_IN=$DO_DAILY_CHECK_IN >> .env
+        echo DO_READ_TO_EARN=$DO_READ_TO_EARN >> .env
+        echo DO_PUNCH_CARDS=$DO_PUNCH_CARDS >> .env
+        echo WEBHOOK_ENABLED=$WEBHOOK_ENABLED >> .env
+        echo WEBHOOK_URL=$WEBHOOK_URL >> .env
+      env:
         HEADLESS: false
         GLOBAL_TIMEOUT: ${{ vars.GLOBAL_TIMEOUT }} || 60000
         SEARCH_DELAY_MIN: ${{ vars.SEARCH_DELAY_MIN }} || 25000
@@ -65,6 +78,9 @@ jobs:
         DO_PUNCH_CARDS: ${{vars.DO_PUNCH_CARDS}} || false
         WEBHOOK_ENABLED: ${{ vars.DISCORD_WEBHOOK_ENABLED }} || false
         WEBHOOK_URL: ${{ vars.DISCORD_WEBHOOK }} || ''
+
+    - name: Run npm start script
+      continue-on-error: true     
       timeout-minutes: 360 # Run this for 3 hours
       # Start in xvfb server
       run: xvfb-run npm run start

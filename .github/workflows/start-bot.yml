@@ -2,7 +2,7 @@ name: Start MS Rewards Bot
 
 on:
   schedule:
-    - cron: "0 0,8,16 * * *" # Runs every 8 hours at Midnight, 8AM, 4PM UTC (aka 8PM, 4AM, Noon - EST)
+    - cron: "0 0,12 * * *" # Runs every 12 hours at Midnight, Noon UTC (aka 7PM & 7AM - EST)
   workflow_dispatch:
 jobs:
   execute-order-66:
